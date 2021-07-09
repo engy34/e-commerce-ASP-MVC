@@ -1,0 +1,94 @@
+﻿@model IEnumerable<WebApplication2.Models.Product>
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>products</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <button class="btn btn-primary-outline btn-sm" data-target="#Cart" data-toggle="modal">Go To Cart List -></button>
+
+            <div class="modal" data-keyboard="falsa" id="Cart" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" style="text-align:center"> Cart List</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    @foreach (var x in Model)
+                                    {<ul>
+                                            <li>
+                                                @Html.DisplayFor(modelx => x.cart.Product.name) -
+                                                @Html.DisplayFor(modelx => x.cart.Product.price)
+
+                                                @Html.DisplayFor(modelx => x.cart.added_at)
+
+                                            </li>
+
+
+                                        </ul>
+
+                                    }
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary">login</button>
+                            <button class="btn btn-primary" data-dismiss="modal">close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@using (Html.BeginForm("Index", "Product", FormMethod.Post))
+
+{
+
+    <div class="form-group">
+
+        @Html.TextBox("search")
+        <input type="submit" value="submit" />
+        <input type="button" onclick="location.href='@Url.Action("Create", "Product")'" value="Add Product" class="btn btn-default" />
+
+    </div>
+    <div>
+
+        @foreach (var c in Model)
+        {<div class="col-lg-2 col-md-4 col-sm-6 col-xs-6">
+                <ul>
+                    <li> @Html.DisplayFor(modelc => c.name) </li>
+
+                    <li>
+                        <img src="~/Uploads/@Html.DisplayFor(modelc => c.image)"
+                             class="thumbnail"
+                             style="width:150px; height:150px;" />
+
+                    </li>
+
+                    <li>
+                        @Html.ActionLink("Details", "Details", new { id = c.id })
+
+                    </li>
+                    <li>
+                        <input type="button" onclick="location.href='@Url.Action("AddToCart","Cart",new { id=c.id})'" value="Add To Cart" class="btn btn-default" />
+                    </li>
+                </ul>
+            </div>
+        }
+
+    </div>
+}
